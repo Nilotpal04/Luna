@@ -128,3 +128,100 @@ button {
   z-index: 2;
 }
 
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 28px;
+    margin-bottom: 35px;
+  }
+
+  .gif {
+    width: 120px;
+    margin-bottom: 16px;
+  }
+
+  .buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+  }
+
+  #yesBtn,
+  #noBtn {
+    padding: 14px 30px;
+    font-size: 15px;
+  }
+
+  #yesBtn {
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 24px;
+    line-height: 1.25;
+  }
+
+  .gif {
+    width: 100px;
+  }
+
+  button {
+    width: 220px;
+  }
+}
+
+@media (max-width: 600px) {
+  #yesBtn,
+  #noBtn {
+    padding: 10px 22px;
+    font-size: 14px;     
+  }
+
+  button {
+    width: 190px;        
+  }
+}
+
+@media (max-width: 420px) {
+  #yesBtn,
+  #noBtn {
+    padding: 9px 20px;
+    font-size: 13px;
+  }
+
+  button {
+    width: 170px;
+  }
+}
+
+@media (max-width: 600px) {
+  .buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    align-items: center;
+  }
+
+  #yesBtn,
+  #noBtn {
+    width: auto;              
+    min-width: 140px;         
+    padding: 10px 22px;       
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 420px) {
+  #yesBtn,
+  #noBtn {
+    min-width: 125px;
+    padding: 9px 20px;
+    font-size: 13px;
+  }
+}
