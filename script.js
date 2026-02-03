@@ -22,21 +22,39 @@ function createHeart() {
 setInterval(createHeart, 600);
 
 function moveNo() {
-  const padding = 80;
+  const padding = window.innerWidth < 600 ? 60 : 80;
 
-  const x = Math.random() * (window.innerWidth - padding * 2);
-  const y = Math.random() * (window.innerHeight - padding * 2);
+  const yesRect = yesBtn.getBoundingClientRect();
+  let x, y;
+  let attempts = 0;
+
+  do {
+    x = Math.random() * (window.innerWidth - padding);
+    y = Math.random() * (window.innerHeight - padding);
+    attempts++;
+  } while (
+    // ❌ overlap detection
+    x < yesRect.right &&
+    x + noBtn.offsetWidth > yesRect.left &&
+    y < yesRect.bottom &&
+    y + noBtn.offsetHeight > yesRect.top &&
+    attempts < 50
+  );
 
   noBtn.style.position = "fixed";
   noBtn.style.left = `${x}px`;
   noBtn.style.top = `${y}px`;
 
-  yesScale += 0.12;
+  // grow Yes (slower on mobile)
+  const growthFactor = window.innerWidth < 600 ? 0.08 : 0.12;
+  yesScale += growthFactor;
   yesBtn.style.transform = `scale(${yesScale})`;
 
+  // cute gif reaction
   askGif.classList.add("bounce");
   setTimeout(() => askGif.classList.remove("bounce"), 600);
 }
+
 
 noBtn.addEventListener("mouseenter", moveNo);
 noBtn.addEventListener("click", moveNo);
@@ -57,35 +75,26 @@ function heartBurst() {
 }
 
 yesBtn.addEventListener("click", () => {
+  yesBtn.disabled = true;
+  startMusic();
   heartBurst();
-
   pingMe();
 
   setTimeout(() => {
-    document.body.innerHTML = `
-      <div style="
-        height:100vh;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        text-align:center;
-        background:radial-gradient(circle at top, #ffe6ee, #f6b3c6);
-        padding:20px;
-        font-family:'Playfair Display', serif;
-      ">
-        <div>
-          <img src="./assets/yes.gif" style="width:180px; margin-bottom:20px;" />
-          <h1 style="font-size:42px; color:#d6336c;">Yay 💖</h1>
-          <p style="font-family:Inter,sans-serif; font-size:18px; margin-top:20px;">
-            Luna, thank you for being my Valentine 🥰<br>
-            I’m really, really happy 💕
-          </p>
-        </div>
+    const container = document.querySelector(".container");
+
+    container.innerHTML = `
+      <div>
+        <img src="./assets/yes.gif" style="width:180px; margin-bottom:20px;" />
+        <h1 style="font-size:42px; color:#d6336c;">Yay 💖</h1>
+        <p style="font-family:Inter,sans-serif; font-size:18px; margin-top:20px;">
+          Luna, thank you for being my Valentine ✨<br>
+          I’m really, really happy 💕
+        </p>
       </div>
     `;
   }, 600);
 });
-
 
 function pingMe() {
   const form = document.getElementById("notifyForm");
@@ -110,3 +119,16 @@ function pingMe() {
     });
 }
 
+const growthFactor = window.innerWidth < 600 ? 0.08 : 0.12;
+yesScale += growthFactor;
+
+const bgMusic = document.getElementById("bgMusic");
+let musicStarted = false;
+
+function startMusic() {
+  if (!musicStarted) {
+    bgMusic.volume = 0.5; // soft volume
+    bgMusic.play().catch(() => {});
+    musicStarted = true;
+  }
+}
